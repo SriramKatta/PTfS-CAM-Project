@@ -168,7 +168,7 @@ void PDE::GSPreCon(Grid* rhs, Grid *x)
     {
         for ( int i=xSize-2; i>0; --i)
         {
-            (*x)(j,i) = (*x)(j,i) + w_c*(w_y*(*x)(j+1,i) + w_x*(*x)(j,i+1));
+            (*x)(j,i) += w_c*(w_y*(*x)(j+1,i) + w_x*(*x)(j,i+1));
         }
     }
 
