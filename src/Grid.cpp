@@ -318,6 +318,7 @@ double dotProduct(Grid *x, Grid *y, bool halo)
 #endif
 
     double dot_res = 0;
+    #pragma omp parallel for reduction(+:dot_res) collapse(2)
     for(int yIndex=shift; yIndex<x->numGrids_y(true)-shift; ++yIndex)
     {
         for(int xIndex=shift; xIndex<x->numGrids_x(true)-shift; ++xIndex)
