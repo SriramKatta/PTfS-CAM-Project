@@ -114,7 +114,7 @@ void PDE::applyStencil(Grid* lhs, Grid* x)
 #ifdef LIKWID_PERFMON
     LIKWID_MARKER_START("APPLY_STENCIL");
 #endif
-
+#pragma omp parallel for collapse(2)
     for ( int j=1; j<ySize-1; ++j)
     {
         for ( int i=1; i<xSize-1; ++i)
