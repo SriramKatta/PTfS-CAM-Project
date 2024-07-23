@@ -153,6 +153,7 @@ void PDE::GSPreCon(Grid* rhs, Grid *x)
 #endif
 
     //forward substitution
+#pragma omp parallel for collapse(2) private(x)
     for ( int j=1; j<ySize-1; ++j)
     {
         for ( int i=1; i<xSize-1; ++i)
@@ -160,12 +161,14 @@ void PDE::GSPreCon(Grid* rhs, Grid *x)
             (*x)(j,i) = w_c*((*rhs)(j,i) + (w_y*(*x)(j-1,i) + w_x*(*x)(j,i-1)));
         }
     }
+
     //backward substitution
+#pragma omp parallel for collapse(2) private(x)
     for ( int j=ySize-2; j>0; --j)
     {
         for ( int i=xSize-2; i>0; --i)
         {
-            (*x)(j,i) = (*x)(j,i) + w_c*(w_y*(*x)(j+1,i) + w_x*(*x)(j,i+1));
+            (*x)(j,i) += w_c*(w_y*(*x)(j+1,i) + w_x*(*x)(j,i+1));
         }
     }
 
